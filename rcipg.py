@@ -46,3 +46,4 @@ def generate(strSize, uppercaseChar, specialChar, cyrillicChar):
         elif x==3:
             pass
         
+#test
