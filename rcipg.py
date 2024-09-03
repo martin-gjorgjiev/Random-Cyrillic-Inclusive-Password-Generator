@@ -1,49 +1,41 @@
 import string
 import secrets
 
-def rollagain(n,list1):
+def rollAgain(n, list1):
     x=secrets.randbelow(n)
     if x in list1:
-        x=rollagain(n,list1)
+        x=rollAgain(n, list1)
     return x
 
-def generate(strSize, uppercaseChar, specialChar, cyrillicChar):
-    #initialise characters
-    lowerAscii=string.ascii_lowercase
-    numeric=string.digits
-    punctuation=string.punctuation
-    cyrillic=['љњертѕуиопшѓасдфгхјклчќжзџцвбнм']
-    password=''
-    listType=[]
-    
-    if specialChar:
-        listType.append(2)
+def buildPassword(size, charSet):
+    # for the number of characters in string, for how long is the password
+    password = ''
+    for i in range (0, size):
+        password+=secrets.choice(charSet)
 
-    if specialChar:
-        listType.append(3)
+    return password
 
-    #check of parameters
-    #strSize must be number
-    if type(strSize)!='int' and strSize<0:
+def checkSize(size):
+    if type(size) != 'int' and size < 0:
         return 'strSize is not a number or smaller than 0'
 
-    #upperChar, specialChar, cyrillicChar must be bool
-    if type(uppercaseChar)!='bool' or type(specialChar)!='bool' or type(cyrillicChar)!='bool':
-        return 'upperChar, specialChar or cyrillicChar is not a bool'
 
-    #for the number of characters in string, how long is the password
-    for i in range (0,strSize):
-        x=rollagain(4,listType)
-        if x==0:
-            char = secrets.choice(lowerAscii)
-            if uppercaseChar and secrets.randbelow(2):
-                char= char.upper()
-            password += str(char) #here
-        elif x==1:
-            pass
-        elif x==2:
-            pass
-        elif x==3:
-            pass
-        
-#test
+def generate(strSize, uppercaseChar, specialChar, cyrillicChar):
+    # initialise characters
+    cyrillic=u'љњертѕуиопшѓасдфгхјклчќжзџцвбнмйьюяъщђћз́с́ёыэґіўїє'
+    charSet = string.ascii_lowercase
+    if type(uppercaseChar) != 'bool' and uppercaseChar:
+        charSet += string.ascii_uppercase
+    charSet += string.digits
+    if type(specialChar) != 'bool' and specialChar:
+        charSet += string.punctuation
+    if type(cyrillicChar) != 'bool' and cyrillicChar:
+        charSet += cyrillic
+        if type(uppercaseChar) != 'bool' and uppercaseChar:
+            charSet += cyrillic.upper()
+
+    # strSize must be number an bigger than zero
+    checkSize(strSize)
+
+    # generate password
+    return buildPassword(strSize, charSet) 
