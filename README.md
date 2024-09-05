@@ -23,7 +23,7 @@ The function returns password on output so you can save it to a variable.
 ```py
 import rcipg
 
-#generate a password with upper, special and cyrillic characters
+# generate a password with upper, special and cyrillic characters
 password=rcipg.generate(8,True,True,True)
 ```
 
